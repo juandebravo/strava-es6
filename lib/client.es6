@@ -12,7 +12,7 @@ let doRequest = (method, access_token, path, body) => {
   };
 
   let p = new Promise(function(resolve, reject) {
-    https.request(options, (res) => {
+    let req = https.request(options, (res) => {
       let body = '';
       const code = res.statusCode;
       const headers = res.headers;
@@ -22,16 +22,19 @@ let doRequest = (method, access_token, path, body) => {
       });
 
       res.on('end', function() {
-        if (200 <= code && code < 400) {
+        if (code === 200) {
           resolve(JSON.parse(body));
         } else {
           reject(code);
         }
       });
+    });
 
-    }).on('error', function(e) {
+    req.on('error', function (e) {
       reject(e);
     });
+
+    req.end()
   });
   return p;
 }
