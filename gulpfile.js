@@ -2,6 +2,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var babel = require('gulp-babel');
 
 gulp.task('default', function() {
   // place code for your default task here
@@ -12,8 +13,7 @@ gulp.task('default', function() {
 var APP_FILES = ['lib/**/*.es6']
 
 gulp.task('create-js', function () {
-    var babel = require('gulp-babel');
-    return gulp.src('src/app.js')
+    return gulp.src('lib/**/*.es6')
         .pipe(babel())
         .pipe(gulp.dest('dist'));
 });
