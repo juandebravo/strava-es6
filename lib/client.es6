@@ -11,7 +11,7 @@ let doRequest = (method, access_token, path, body) => {
     agent: false
   };
 
-  let p = new Promise(function(resolve, reject) {
+  let p = new Promise( (resolve, reject) => {
     let req = https.request(options, (res) => {
       let body = '';
       const code = res.statusCode;

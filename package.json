@@ -39,6 +39,7 @@
     "jshint": "^2.4.4",
     "sinon": "^1.12.2",
     "mocha": "^2.2.5",
-    "mocha-lcov-reporter": "0.0.2"
+    "mocha-lcov-reporter": "0.0.2",
+    "nock": "~2.12.0"
   }
 }
