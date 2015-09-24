@@ -1,8 +1,7 @@
-require('ass-ert');
-var nock = require('nock');
+const nock = require('nock');
 
-var strava = require('../dist/strava');
-var ass = require('ass-ert');
+const strava = require('../dist/strava');
+const ass = require('ass-ert');
 
 function mockAthleteRequest(access_token, athlete_id) {
   nock('https://www.strava.com:443')
@@ -57,7 +56,7 @@ function mockAthleteRequest(access_token, athlete_id) {
       );
 }
 
-describe('strava.client', function() {
+describe('strava.client', function () {
 
   before(function() {
     // Avoid any HTTP request
@@ -66,10 +65,6 @@ describe('strava.client', function() {
 
   it('should return a valid version number', function () {
     ass(strava.version).match(/^(\d\.){2}\d$/);
-  });
-
-  it('should return bar upon calling foo', function () {
-    ass(strava.foo()).to.eql('bar');
   });
 
   it('should retrieve authenticated athlete profile', function (done) {
@@ -81,7 +76,10 @@ describe('strava.client', function() {
       ass(data).to.match({
         id: 4681834,
         firstname: 'Juan',
-        lastname: 'De Bravo'
+        lastname: 'De Bravo',
+        athlete_type: strava.AthleteType.CYCLIST,
+        sex: strava.Sex.MALE,
+        measurement_preference: strava.MeasurementPreference.METERS
       });
       done();
     })

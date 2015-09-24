@@ -1,29 +1,29 @@
-let foo = () => 'bar';
-
 const https = require('https');
 
+const options = {
+  hostname: 'www.strava.com',
+  port: 443,
+  agent: false
+};
+
 let doRequest = (method, access_token, path, body) => {
-  const options = {
-    hostname: 'www.strava.com',
-    port: 443,
-    path: '/api/v3/' + path + '?access_token=' + access_token,
-    method: method,
-    agent: false
-  };
+  let _options = options;
+  _options.path = '/api/v3/' + path + '?access_token=' + access_token;
+  _options.method = method;
 
   let p = new Promise( (resolve, reject) => {
-    let req = https.request(options, (res) => {
-      let body = '';
+    let req = https.request(_options, (res) => {
+      let data = '';
       const code = res.statusCode;
       const headers = res.headers;
 
       res.on('data', d => {
-        body += d.toString();
+        data += d.toString();
       });
 
       res.on('end', function() {
         if (code === 200) {
-          resolve(JSON.parse(body));
+          resolve(JSON.parse(data));
         } else {
           reject(code);
         }
@@ -45,5 +45,4 @@ let athlete = (access_token) => {
   return get(access_token, 'athlete');
 }
 
-exports.foo = foo;
 exports.athlete = athlete;
