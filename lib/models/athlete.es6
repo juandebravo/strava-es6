@@ -1,6 +1,5 @@
 let Enum = require('../utils').Enum;
 
-
 // TODO: set the values which format should be validated
 //
 // badge_type_id: 0,
@@ -30,9 +29,9 @@ const _unchecked_arguments = [
   'weight', 'premium', 'created_at', 'updated_at', 'date_preference'
 ]
 
+// This class represents an Athlete, based
+// on the interface defined in http://strava.github.io/api/v3/athlete/
 class Athlete {
-  // This class represents an Athlete, based
-  // on the interface defined in http://strava.github.io/api/v3/athlete/
 
   constructor(id, args) {
     this.id = id;
