@@ -5,7 +5,7 @@ describe('utils', function () {
 
   describe('enum', function () {
     const _values = {MONDAY: 0, TUESDAY: 1, WEDNESDAY: 2, THURSDAY: 3, FRIDAY: 4, SATURDAY: 5, SUNDAY: 6};
-    const DAYS_OF_WEEK = new util.Enum(_values);
+    const DAYS_OF_WEEK = util.Enum(_values);
 
     it('should inject the keys in the new object', function () {
       for (var v in _values) {

@@ -7,18 +7,18 @@ let Enum = require('../utils').Enum;
 // bikes: [],
 // shoes: [] }
 
-const Sex = new Enum({MALE: 'M', FEMALE: 'F'});
+const Sex = Enum({MALE: 'M', FEMALE: 'F'});
 
-const Friend = new Enum({PENDING: 'pending',
-                         ACCEPTED: 'accepted',
-                         BLOCKED: 'blocked',
-                         NULL: null});
+const Friend = Enum({PENDING: 'pending',
+                     ACCEPTED: 'accepted',
+                     BLOCKED: 'blocked',
+                     NULL: null});
 
 const Follower = Friend;
 
-const MeasurementPreference = new Enum({METERS: 'meters', FEET: 'feet'});
+const MeasurementPreference = Enum({METERS: 'meters', FEET: 'feet'});
 
-const AthleteType = new Enum({CYCLIST: 0, RUNNER: 1});
+const AthleteType = Enum({CYCLIST: 0, RUNNER: 1});
 
 // All those parameters will be set directly in the Athlete instance
 // without any further check

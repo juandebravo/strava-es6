@@ -1,17 +1,16 @@
 
 // Helper to create objects enum-alike
 // i.e.
-//   let Foo = new Enum({BAR: 0, BAZZ: 1});
+//   let Foo = Enum({BAR: 0, BAZZ: 1});
 class Enum {
 
   constructor(values) {
-    this._values = values;
 
     // Ensure we can access the enum keys directly
     // i.e.
     //   Foo.BAR -> 0
-    for (let v in this._values) {
-      this[v] = this._values[v];
+    for (let v of Object.keys(values)) {
+      this[v] = values[v];
     }
   }
 
@@ -19,8 +18,8 @@ class Enum {
   // i.e.
   //   Foo.parse(0) -> BAR
   parse (value) {
-    for (let v in this._values) {
-      if (this._values[v] === value) {
+    for (let v of Object.keys(this)) {
+      if (this[v] === value) {
         return v
       }
     }
@@ -47,4 +46,5 @@ class Enum {
   }
 }
 
-exports.Enum = Enum;
+exports.Enum = (opts) => Object.freeze(new Enum(opts));
+
