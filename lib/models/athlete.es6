@@ -7,7 +7,7 @@ let Enum = require('../utils').Enum;
 // bikes: [],
 // shoes: [] }
 
-const Sex = Enum({MALE: 'M', FEMALE: 'F'});
+const Sex = Enum({MALE: 'M', FEMALE: 'F', RATHER_NOT_SAY: null});
 
 const Friend = Enum({PENDING: 'pending',
                      ACCEPTED: 'accepted',

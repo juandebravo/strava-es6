@@ -68,7 +68,7 @@ describe('strava.client', function () {
   });
 
   it('should retrieve authenticated athlete profile', function (done) {
-    var access_token = 'f57facd77c1ee265a0cf2b9b3e28e91fd20f45d';
+    var access_token = 'f57facd77c1ee265a0cf2b9b3e28e91fd20f45d9';
     mockAthleteRequest(access_token, 4681834);
 
     strava.athlete(access_token)
@@ -80,6 +80,63 @@ describe('strava.client', function () {
         athlete_type: strava.AthleteType.CYCLIST,
         sex: strava.Sex.MALE,
         measurement_preference: strava.MeasurementPreference.METERS
+      });
+      done();
+    })
+    .catch(function (err) {
+      done(Error('Invalid HTTP response <' + err + '>'));
+    });
+  });
+
+  it('should retrieve athlete per identifier', function (done) {
+    var access_token = 'f57facd77c1ee265a0cf2b9b3e28e91fd20f45d9';
+    var athlete_id = 553155;
+
+    nock('https://www.strava.com:443')
+    .get('/api/v3/athletes/' + athlete_id)
+    .query({access_token: access_token})
+    .reply(
+      200,
+      {
+        id: athlete_id,
+        firstname: 'gil',
+        lastname: 'cohen',
+        profile_medium: 'https://dgalywyr863hv.cloudfront.net/pictures/athletes/553155/1354795/1/medium.jpg',
+        profile: 'https://dgalywyr863hv.cloudfront.net/pictures/athletes/553155/1354795/1/large.jpg',
+        city: 'Ramat Ha Sharon',
+        state: null,
+        country: 'Israel',
+        sex: 'M',
+        friend: 'accepted',
+        follower: 'accepted',
+        premium: false,
+        created_at: '2012-05-25T21:10:23Z',
+        updated_at: '2015-09-25T12:00:00Z'
+      },
+      {
+        date: 'Wed, 23 Sep 2015 22:52:19 GMT',
+        etag: '188b871de69c2dd04cadddfddb381b63',
+        status: '200 OK',
+        connection: 'Close',
+        'cache-control': 'max-age=0, private, must-revalidate',
+        'content-type': 'application/json; charset=UTF-8',
+        'set-cookie': ['_strava3_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFVEkiJWQ0ZTVkYWEyOTYxNTk2MWUzZDI5YmQ0M2I5Y2JlZmQyBjsAVEkiEGNsZWFyX2NsaWNrBjsARlQ%3D--72301c46d14b02c4ef7c7011604f8b2cc50a20eb; domain=strava.com; path=/; HttpOnly'],
+        'x-ratelimit-limit': '600,30000',
+        'x-ratelimit-usage': '1,1',
+        'x-request-id': 'e009c60657aecb261f7fa8e6e684096b',
+        'x-ua-compatible': 'IE=Edge,chrome=1',
+        'content-length': '700',
+      }
+    );
+
+    strava.athlete(access_token, athlete_id)
+    .then(function (data) {
+      debugger
+      ass(data).to.match({
+        id: 553155,
+        firstname: 'gil',
+        lastname: 'cohen',
+        sex: strava.Sex.MALE
       });
       done();
     })

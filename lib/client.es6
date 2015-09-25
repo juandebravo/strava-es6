@@ -41,8 +41,15 @@ let doRequest = (method, access_token, path, body) => {
 
 let get = doRequest.bind(null, 'GET');
 
-let athlete = (access_token) => {
-  return get(access_token, 'athlete');
+let athlete = (access_token, athlete=null) => {
+  if (athlete === null) {
+    return get(access_token, 'athlete');
+  }
+  return get(access_token, `athletes/${athlete}`);
+}
+
+let update_athlete = (access_token, city=null, state=null, sex=null, weight=null) => {
+
 }
 
 exports.athlete = athlete;

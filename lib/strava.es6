@@ -3,8 +3,8 @@ const models = require('./models');
 
 exports.version = require('../package.json').version;
 
-let athlete = (access_token) => {
-    let p = client.athlete(access_token)
+let athlete = (access_token, athlete=null) => {
+    let p = client.athlete(access_token, athlete)
     .then((data) => {
         const id = data.id;
         delete data.id;
