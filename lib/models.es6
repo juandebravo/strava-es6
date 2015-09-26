@@ -1,12 +1,13 @@
+// Export directly every export in the following
+// models files
 
-let _activity = require('./models/activity');
+// TODO: load automatically every file in models folder
+const _models = ['activity', 'athlete'];
 
-for (let o of Object.keys(_activity)) {
-    exports[o] = _activity[o];
-}
+for (let m of _models) {
+  let _file = require(`./models/${m}`);
 
-let _athlete = require('./models/athlete');
-
-for (let o of Object.keys(_athlete)) {
-    exports[o] = _athlete[o];
+  for (let o of Object.keys(_file)) {
+    exports[o] = _file[o];
+  }
 }
