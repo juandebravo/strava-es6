@@ -52,4 +52,9 @@ let update_athlete = (access_token, city=null, state=null, sex=null, weight=null
 
 }
 
+let activities = (access_token, interval, page, per_page) => {
+  return get(access_token, 'athlete/activities');
+}
+
 exports.athlete = athlete;
+exports.activities = activities;

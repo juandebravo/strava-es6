@@ -27,7 +27,7 @@ const _unchecked_arguments = [
   'profile', 'city', 'state', 'country', 'follower_count',
   'friend_count', 'mutual_friend_count', 'email', 'ftp',
   'weight', 'premium', 'created_at', 'updated_at', 'date_preference'
-]
+];
 
 // This class represents an Athlete, based
 // on the interface defined in http://strava.github.io/api/v3/athlete/

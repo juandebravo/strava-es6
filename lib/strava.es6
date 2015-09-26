@@ -13,7 +13,24 @@ let athlete = (access_token, athlete=null) => {
 
     return p;
 }
+
+let activities = (access_token, interval, page, per_page) => {
+    let p = client.activities(access_token)
+    .then((data) => {
+      let _activities = new Array();
+      for (let act of data) {
+        const id = act.id
+        delete act.id;
+        _activities.push(new models.Activity(id, act));
+      }
+      return _activities;
+    })
+
+    return p;
+}
+
 exports.athlete = athlete;
+exports.activities = activities;
 exports.AthleteType = models.AthleteType;
 exports.Sex = models.Sex;
 exports.MeasurementPreference = models.MeasurementPreference;
