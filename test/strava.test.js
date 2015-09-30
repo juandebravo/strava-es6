@@ -355,7 +355,7 @@ describe('strava.client', function () {
     })
     .catch(function (err) {
       console.log(err);
-      done();
+      done(error);
     });
   })
 

@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const client = require('./client');
 const models = require('./models');
 
@@ -19,12 +21,14 @@ let athlete = (access_token, athlete=null) => {
 let activities = (access_token, interval, page, per_page) => {
     let p = client.activities(access_token)
     .then((data) => {
-      let _activities = new Array();
-      for (let act of data) {
+      let _activities = _.reduce(data, function (result, act) {
         const id = act.id
         delete act.id;
-        _activities.push(new models.Activity(id, act));
-      }
+
+        // Create and push a new Activity to the result
+        result.push(new models.Activity(id, act));
+        return result
+      }, []);
       return _activities;
     })
 
@@ -36,4 +40,5 @@ exports.activities = activities;
 exports.AthleteType = models.AthleteType;
 exports.Sex = models.Sex;
 exports.MeasurementPreference = models.MeasurementPreference;
+
 exports.version = require('../package.json').version;

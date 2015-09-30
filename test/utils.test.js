@@ -1,5 +1,6 @@
 const util = require('../dist/utils');
 const ass = require('ass-ert');
+const _ = require('lodash');
 
 describe('utils', function () {
 
@@ -25,20 +26,23 @@ describe('utils', function () {
     });
 
     describe('check', function () {
+
       it('should return true if the value is valid in the enum', function () {
-        for (var i of [0, 1, 2, 3, 4, 5, 6]) {
-          ass(DAYS_OF_WEEK.check(i)).to.be.true;
-        }
+        [0, 1, 2, 3, 4, 5, 6].forEach(function (item) {
+          ass(DAYS_OF_WEEK.check(item)).to.be.true;
+        });
       });
 
       it('should return false if the value is NOT valid in the enum', function () {
-        for (var i of [-1, '0', 7, null, undefined]) {
-          ass(DAYS_OF_WEEK.check(i)).to.be.false;
-        }
+        [-1, '0', 7, null, undefined].forEach(function (item) {
+          ass(DAYS_OF_WEEK.check(item)).to.be.false;
+        });
       });
+
     });
 
     describe('assert', function () {
+
       it('should return the received value if the value is valid in the enum', function () {
         ass(DAYS_OF_WEEK.assert(0)).to.equal(0);
       });
@@ -48,6 +52,7 @@ describe('utils', function () {
           DAYS_OF_WEEK.assert(-1);
         }).raises(Error);
       });
+
     });
 
   });

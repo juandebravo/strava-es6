@@ -2,10 +2,10 @@
 // models files
 
 // TODO: load automatically every file in models folder
-const _models = ['activity', 'athlete'];
+const _models = ['activity', 'athlete', 'stravamap'];
 
-for (let m of _models) {
-  let _file = require(`./models/${m}`);
+for (let model of _models) {
+  let _file = require(`./models/${model}`);
 
   for (let o of Object.keys(_file)) {
     exports[o] = _file[o];

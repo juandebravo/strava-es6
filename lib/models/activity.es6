@@ -18,9 +18,11 @@ const _unchecked_arguments = [
   'type'
 ];
 
-//     athlete: { id: 4681834, resource_state: 1 },
-//     gear_id: null,
+// athlete: { id: 4681834, resource_state: 1 },
+// gear_id: null,
 
+// This class represents an Activity, based
+// on the interface defined in http://strava.github.io/api/v3/activity/
 class Activity {
 
   constructor (id, args) {
