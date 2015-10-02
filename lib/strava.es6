@@ -1,3 +1,5 @@
+/*jshint esnext: true */
+
 const _ = require('lodash');
 
 const client = require('./client');
@@ -14,7 +16,7 @@ let athlete = (access_token, athlete=null) => {
     });
 
     return p;
-}
+};
 
 // Returns an Array of Activities
 // TODO: handle the rest of parameters
@@ -22,18 +24,18 @@ let activities = (access_token, interval, page, per_page) => {
     let p = client.activities(access_token)
     .then((data) => {
       let _activities = _.reduce(data, function (result, act) {
-        const id = act.id
+        const id = act.id;
         delete act.id;
 
         // Create and push a new Activity to the result
         result.push(new models.Activity(id, act));
-        return result
+        return result;
       }, []);
       return _activities;
-    })
+    });
 
     return p;
-}
+};
 
 exports.athlete = athlete;
 exports.activities = activities;

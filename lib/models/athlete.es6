@@ -1,3 +1,5 @@
+/*jshint esnext: true */
+
 let Enum = require('../utils').Enum;
 
 // TODO: set the values which format should be validated
@@ -45,23 +47,23 @@ class Athlete {
 
     // Work in Enums for predefined values
     if ('sex' in args) {
-      this.sex = Sex.assert(args['sex']);
+      this.sex = Sex.assert(args.sex);
     }
 
     if ('friend' in args) {
-      this.friend = Friend.assert(args['friend']);
+      this.friend = Friend.assert(args.friend);
     }
 
     if ('follower' in args) {
-      this.follower = Follower.assert(args['follower']);
+      this.follower = Follower.assert(args.follower);
     }
 
     if ('athlete_type' in args) {
-      this.athlete_type = AthleteType.assert(args['athlete_type']);
+      this.athlete_type = AthleteType.assert(args.athlete_type);
     }
 
     if ('measurement_preference' in args) {
-      this.measurement_preference = MeasurementPreference.assert(args['measurement_preference']);
+      this.measurement_preference = MeasurementPreference.assert(args.measurement_preference);
     }
 
   }

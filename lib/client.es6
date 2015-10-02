@@ -1,3 +1,5 @@
+/*jshint esnext: true */
+
 const https = require('https');
 
 const options = {
@@ -34,10 +36,10 @@ let doRequest = (method, access_token, path, body) => {
       reject(e);
     });
 
-    req.end()
+    req.end();
   });
   return p;
-}
+};
 
 let get = doRequest.bind(null, 'GET');
 
@@ -46,15 +48,15 @@ let athlete = (access_token, athlete=null) => {
     return get(access_token, 'athlete');
   }
   return get(access_token, `athletes/${athlete}`);
-}
+};
 
 let update_athlete = (access_token, city=null, state=null, sex=null, weight=null) => {
 
-}
+};
 
 let activities = (access_token, interval, page, per_page) => {
   return get(access_token, 'athlete/activities');
-}
+};
 
 exports.athlete = athlete;
 exports.activities = activities;

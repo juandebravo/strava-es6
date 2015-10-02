@@ -1,3 +1,4 @@
+/*jshint esnext: true */
 
 // Helper to create objects enum-alike
 // i.e.
@@ -20,7 +21,7 @@ class Enum {
   parse (value) {
     for (let v of Object.keys(this)) {
       if (this[v] === value) {
-        return v
+        return v;
       }
     }
     return null;

@@ -1,3 +1,5 @@
+/*jshint esnext: true */
+
 const Enum = require('../utils').Enum;
 const StravaMap = require('./stravamap').StravaMap;
 const Athlete = require('./athlete').Athlete;
@@ -37,7 +39,7 @@ class Activity {
 
     // Work in Enums for predefined values
     if ('workout_type' in args) {
-      this.workout_type = WorkoutType.assert(args['workout_type']);
+      this.workout_type = WorkoutType.assert(args.workout_type);
     }
 
     if ('map' in args) {
@@ -48,7 +50,6 @@ class Activity {
       this.athlete = new Athlete(args.athlete.id, {resource_state: args.athlete.resource_state});
     }
   }
-
-};
+}
 
 exports.Activity = Activity;

@@ -1,3 +1,5 @@
+/*jshint esnext: true */
+
 // Export directly every export in the following
 // models files
 
