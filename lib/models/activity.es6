@@ -1,8 +1,8 @@
 /*jshint esnext: true */
 
-const Enum = require('../utils').Enum;
-const StravaMap = require('./stravamap').StravaMap;
-const Athlete = require('./athlete').Athlete;
+import {Enum} from '../utils';
+import {StravaMap} from './stravamap';
+import {Athlete} from './athlete';
 
 const WorkoutType = Enum({NULL: null, DEFAULT: 0, RACE: 1, LONG_RUN: 2, INTERVALS: 3});
 
@@ -25,7 +25,7 @@ const _unchecked_arguments = [
 
 // This class represents an Activity, based
 // on the interface defined in http://strava.github.io/api/v3/activity/
-class Activity {
+export class Activity {
 
   constructor (id, args) {
     this.id = id;
@@ -50,6 +50,4 @@ class Activity {
       this.athlete = new Athlete(args.athlete.id, {resource_state: args.athlete.resource_state});
     }
   }
-}
-
-exports.Activity = Activity;
+};

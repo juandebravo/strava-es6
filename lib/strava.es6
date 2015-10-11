@@ -2,12 +2,12 @@
 
 const _ = require('lodash');
 
-const client = require('./client');
-const models = require('./models');
+import * as client from './client';
+import * as models from './models';
 
 // Returns an Athlete based on the access token
 // or the athlete id
-let athlete = (access_token, athlete=null) => {
+export let athlete = (access_token, athlete=null) => {
     let p = client.athlete(access_token, athlete)
     .then((data) => {
         const id = data.id;
@@ -20,7 +20,7 @@ let athlete = (access_token, athlete=null) => {
 
 // Returns an Array of Activities
 // TODO: handle the rest of parameters
-let activities = (access_token, interval, page, per_page) => {
+export let activities = (access_token, interval, page, per_page) => {
     let p = client.activities(access_token)
     .then((data) => {
       let _activities = _.reduce(data, function (result, act) {
@@ -37,10 +37,7 @@ let activities = (access_token, interval, page, per_page) => {
     return p;
 };
 
-exports.athlete = athlete;
-exports.activities = activities;
-exports.AthleteType = models.AthleteType;
-exports.Sex = models.Sex;
-exports.MeasurementPreference = models.MeasurementPreference;
-
-exports.version = require('../package.json').version;
+export let AthleteType = models.AthleteType;
+export let Sex = models.Sex;
+export let MeasurementPreference = models.MeasurementPreference;
+export let version = require('../package.json').version;

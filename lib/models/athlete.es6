@@ -1,6 +1,6 @@
 /*jshint esnext: true */
 
-let Enum = require('../utils').Enum;
+import {Enum} from '../utils';
 
 // TODO: set the values which format should be validated
 //
@@ -9,18 +9,18 @@ let Enum = require('../utils').Enum;
 // bikes: [],
 // shoes: [] }
 
-const Sex = Enum({MALE: 'M', FEMALE: 'F', RATHER_NOT_SAY: null});
+export const Sex = Enum({MALE: 'M', FEMALE: 'F', RATHER_NOT_SAY: null});
 
-const Friend = Enum({PENDING: 'pending',
-                     ACCEPTED: 'accepted',
-                     BLOCKED: 'blocked',
-                     NULL: null});
+export const Friend = Enum({PENDING: 'pending',
+                            ACCEPTED: 'accepted',
+                            BLOCKED: 'blocked',
+                            NULL: null});
 
-const Follower = Friend;
+export const Follower = Friend;
 
-const MeasurementPreference = Enum({METERS: 'meters', FEET: 'feet'});
+export const MeasurementPreference = Enum({METERS: 'meters', FEET: 'feet'});
 
-const AthleteType = Enum({CYCLIST: 0, RUNNER: 1});
+export const AthleteType = Enum({CYCLIST: 0, RUNNER: 1});
 
 // All those parameters will be set directly in the Athlete instance
 // without any further check
@@ -33,7 +33,7 @@ const _unchecked_arguments = [
 
 // This class represents an Athlete, based
 // on the interface defined in http://strava.github.io/api/v3/athlete/
-class Athlete {
+export class Athlete {
 
   constructor(id, args) {
     this.id = id;
@@ -68,10 +68,3 @@ class Athlete {
 
   }
 }
-
-exports.Athlete = Athlete;
-exports.AthleteType = AthleteType;
-exports.Sex = Sex;
-exports.Friend = Friend;
-exports.Follower = Follower;
-exports.MeasurementPreference = MeasurementPreference;

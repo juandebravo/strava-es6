@@ -3,7 +3,7 @@
 // Helper to create objects enum-alike
 // i.e.
 //   let Foo = Enum({BAR: 0, BAZZ: 1});
-class Enum {
+class _Enum {
 
   constructor(values) {
 
@@ -47,5 +47,4 @@ class Enum {
   }
 }
 
-exports.Enum = (opts) => Object.freeze(new Enum(opts));
-
+export var Enum = (opts) => Object.freeze(new _Enum(opts));

@@ -1,6 +1,6 @@
 /*jshint esnext: true */
 
-class StravaMap {
+export class StravaMap {
 
   constructor (id, summary_polyline, resource_state) {
     this.id = id;
@@ -9,5 +9,3 @@ class StravaMap {
   }
 
 }
-
-exports.StravaMap = StravaMap;
