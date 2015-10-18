@@ -2,9 +2,9 @@ const util = require('../dist/utils');
 const ass = require('ass-ert');
 const _ = require('lodash');
 
-describe('utils', function () {
+describe('strava.utils', function () {
 
-  describe('enum', function () {
+  describe('Enum', function () {
     const _values = {MONDAY: 0, TUESDAY: 1, WEDNESDAY: 2, THURSDAY: 3, FRIDAY: 4, SATURDAY: 5, SUNDAY: 6};
     const DAYS_OF_WEEK = util.Enum(_values);
 
@@ -14,7 +14,7 @@ describe('utils', function () {
       }
     });
 
-    describe('parse', function () {
+    describe('#parse()', function () {
       it('should return the key that contains the received value', function () {
         ass(DAYS_OF_WEEK.parse(0)).to.equal('MONDAY');
         ass(DAYS_OF_WEEK.parse(6)).to.equal('SUNDAY');
@@ -25,7 +25,7 @@ describe('utils', function () {
       });
     });
 
-    describe('check', function () {
+    describe('#check()', function () {
 
       it('should return true if the value is valid in the enum', function () {
         [0, 1, 2, 3, 4, 5, 6].forEach(function (item) {
@@ -41,16 +41,17 @@ describe('utils', function () {
 
     });
 
-    describe('assert', function () {
+    describe('#assert()', function () {
 
       it('should return the received value if the value is valid in the enum', function () {
         ass(DAYS_OF_WEEK.assert(0)).to.equal(0);
       });
 
       it('should raise Error if the received value is NOT valid in the enum', function () {
+        var value = -1;
         ass(function () {
-          DAYS_OF_WEEK.assert(-1);
-        }).raises(Error);
+          DAYS_OF_WEEK.assert(value);
+        }).raises(Error).prop('message').eql('Invalid value ' + value + ' for the Enum');
       });
 
     });

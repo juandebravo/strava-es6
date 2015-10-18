@@ -27,7 +27,7 @@ gulp.task('test', ['create-js'], function () {
     var mocha = require('gulp-mocha');
     var gutil = require('gulp-util');
 
-    gulp.src(['test/*.test.js'], { read: false })
+    gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
       reporter: 'spec'
     }));

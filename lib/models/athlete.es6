@@ -1,5 +1,7 @@
 /*jshint esnext: true */
 
+import * as client from '../client';
+
 import {Enum} from '../utils';
 
 // TODO: set the values which format should be validated
@@ -67,4 +69,33 @@ export class Athlete {
     }
 
   }
+
+  update(access_token, city=null, state=null, sex=null, weight=null) {
+
+  };
+
+  // Returns an Athlete based on the access token
+  static findByAccessToken(access_token) {
+    const p = client.get(access_token, 'athlete')
+    .then(Athlete.fromStrava);
+
+    return p;
+  };
+
+  // Returns an Athlete based on the athlete id
+  static findById(access_token, athlete_id) {
+    const p = client.get(access_token, `athletes/${athlete_id}`)
+    .then(Athlete.fromStrava);
+
+    return p;
+  };
+
+  // Helper to create an `Athlete` instance by using the
+  // data retrieved from Strava
+  static fromStrava(data) {
+    const id = data.id;
+    delete data.id;
+    return new Athlete(id, data);
+  }
+
 }

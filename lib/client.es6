@@ -41,19 +41,9 @@ let doRequest = (method, access_token, path, body) => {
   return p;
 };
 
-let get = doRequest.bind(null, 'GET');
-
-export let athlete = (access_token, athlete=null) => {
-  if (athlete === null) {
-    return get(access_token, 'athlete');
-  }
-  return get(access_token, `athletes/${athlete}`);
-};
-
-let update_athlete = (access_token, city=null, state=null, sex=null, weight=null) => {
-
-};
-
-export let activities = (access_token, interval, page, per_page) => {
-  return get(access_token, 'athlete/activities');
+module.exports = {
+  get: doRequest.bind(null, 'GET'),
+  post: doRequest.bind(null, 'POST'),
+  put: doRequest.bind(null, 'PUT'),
+  delete: doRequest.bind(null, 'DELETE')
 };
