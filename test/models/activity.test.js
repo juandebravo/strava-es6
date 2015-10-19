@@ -4,7 +4,7 @@ const _ = require('lodash');
 const activity = require('../../dist/models/activity');
 const ass = require('ass-ert');
 
-function mockActivityRequest(access_token) {
+function mockActivitiesRequest(access_token) {
   var data = [{
         "id": 396507138,
         "resource_state": 2,
@@ -191,18 +191,99 @@ function mockActivityRequest(access_token) {
   );
 }
 
+function mockActivityRequest(access_token, activity_id, include_all_efforts) {
+  var data = {
+    id: activity_id,
+    resource_state: 3,
+    external_id: '251313404.tcx',
+    upload_id: 466108041,
+    name: 'Running in Barcelona in the afternoon. Best pace of the season!!!!',
+    distance: 10213.2,
+    moving_time: 2665,
+    elapsed_time: 2669,
+    total_elevation_gain: 39.4,
+    start_date: '2015-10-19T18:12:26Z',
+    start_date_local: '2015-10-19T20:12:26Z',
+    timezone: '(GMT+01:00) Europe/Madrid',
+    start_latlng: [ 41.38, 2.15 ],
+    end_latlng: [ 41.38, 2.15 ],
+    location_city: 'Barcelona',
+    location_state: 'CT',
+    location_country: 'Spain',
+    start_latitude: 41.38,
+    start_longitude: 2.15,
+    achievement_count: 5,
+    kudos_count: 1,
+    comment_count: 0,
+    athlete_count: 1,
+    photo_count: 0,
+    trainer: false,
+    commute: false,
+    manual: false,
+    private: false,
+    flagged: false,
+    average_speed: 3.832,
+    max_speed: 4.5,
+    average_heartrate: 165,
+    max_heartrate: 196,
+    total_photo_count: 0,
+    has_kudoed: false,
+    workout_type: null,
+    map: {
+      id: 'a416339830',
+      summary_polyline: 's`q{FitbLbDLnX_c@Pu~A~Ack@gDcFc_@qYs@aOzBuIhZoMnNbDnc@pBiC_Bo@wGaH`Cq]sCo`@fQeC`J~AjP`]pVdEzFwAhx@d@jpAcDzE',
+      resource_state: 3
+    },
+    athlete: {
+      id: 4681834,
+      resource_state: 1
+    },
+    type: 'Run'
+  };
+
+  var query = {access_token: access_token};
+  if (include_all_efforts) {
+    query.include_all_efforts = true;
+  }
+  nock('https://www.strava.com:443')
+  .get('/api/v3/activities/' + activity_id)
+  .query(query)
+  .reply(
+    200,
+    data,
+      {
+        date: 'Sat, 26 Sep 2015 14:39:54 GMT',
+        etag: '7019c890b236377db4fb3111760ae7d5',
+        status: '200 OK',
+        connection: 'Close',
+        'cache-control': 'max-age=0, private, must-revalidate',
+        'content-type': 'application/json; charset=UTF-8',
+        'set-cookie': [ '_strava3_session=BAh7B0kiD3Nlc3Npb25faWQGOgZFVEkiJTk0NmU5ZDZhMDE4OGQyYTI5MTI1OTlhNWZjYjgxNTAwBjsAVEkiEGNsZWFyX2NsaWNrBjsARlQ%3D--a1e2ea68a6dafda829a792efae2730405015f9ce; domain=strava.com; path=/; HttpOnly' ],
+        'strava-athlete-upload-version': 'f2d96c1ba7acf4c8b06ae7845f7338b2',
+        'x-ratelimit-limit': '600,30000',
+        'x-ratelimit-usage': '21,30',
+        'x-request-id': 'fcafb870c4114dce32c1b3d97cba1884',
+        'x-ua-compatible': 'IE=Edge,chrome=1',
+        'transfer-encoding': 'chunked',
+      }
+  );
+
+  return data;
+
+}
+
 describe('strava.models.activity.Activity', function () {
   var ACCESS_TOKEN;
 
   before(function() {
     // Avoid any HTTP request
-    nock.disableNetConnect();
+    //nock.disableNetConnect();
     ACCESS_TOKEN = 'foobar';
   });
 
   it('should retrieve a list of athlete activities', function (done) {
     var access_token = ACCESS_TOKEN;
-    mockActivityRequest(access_token);
+    mockActivitiesRequest(access_token);
 
     activity.Activity.findAll(access_token)
     .then(function (data) {
@@ -262,6 +343,113 @@ describe('strava.models.activity.Activity', function () {
       });
     });
 
+    it('should format a Date instance to ISO 8601 format');
+
+    it('should set the private flag is defined');
+
+    it('should set the trainer flag is defined');
+
+    it('should set the commute flag is defined');
+
+  });
+
+  describe('#findById()', function () {
+    var ACCESS_TOKEN;
+
+    before(function() {
+      // Avoid any HTTP request
+      nock.disableNetConnect();
+      ACCESS_TOKEN = 'f57facd77c1ee265a0cf2b9b3e28e91fd20f45d9';
+    });
+
+    it('should return an activity by using its id', function () {
+      var ACTIVITY_ID = '416339830'
+
+      var data = mockActivityRequest(ACCESS_TOKEN, ACTIVITY_ID);
+
+      activity.Activity.findById(ACCESS_TOKEN, ACTIVITY_ID)
+      .then(function (act) {
+        // Check that we're getting an `Activity` instance
+        ass(act.constructor.name).eql('Activity');
+
+        // Remove the values that are converted to an instance
+        delete data.map;
+        delete data.athlete;
+
+        // Check that the primitive values are set properly
+        _.forEach(data, function (value, key) {
+          ass(act[key]).to.eql(value);
+        });
+
+        // Validate the created objects
+        ass(act.map.constructor.name).eql('StravaMap');
+        ass(act.map.id).to.eql('a416339830');
+
+        ass(act.athlete.constructor.name).eql('Athlete');
+        ass(act.athlete.id).to.eql(4681834);
+
+        // That was cool while checking the data received :)
+        // It could be removed, but keeping in honour of composition
+        ass(act).to.match({
+          athlete: ass.match({
+            id: 4681834,
+            resource_state: 1
+          }),
+          map: ass.match({
+            id: 'a416339830',
+            resource_state: 3
+          })
+        });
+      })
+      .catch(function (err) {
+        console.log(err);
+        done(error);
+      });
+    });
+
+    it('should return an activity and its efforts by using its id', function () {
+      var ACTIVITY_ID = '416339830'
+
+      var data = mockActivityRequest(ACCESS_TOKEN, ACTIVITY_ID, true);
+
+      activity.Activity.findById(ACCESS_TOKEN, ACTIVITY_ID, true)
+      .then(function (act) {
+        // Check that we're getting an `Activity` instance
+        ass(act.constructor.name).eql('Activity');
+
+        // Remove the values that are converted to an instance
+        delete data.map;
+        delete data.athlete;
+
+        // Check that the primitive values are set properly
+        _.forEach(data, function (value, key) {
+          ass(act[key]).to.eql(value);
+        });
+
+        // Validate the created objects
+        ass(act.map.constructor.name).eql('StravaMap');
+        ass(act.map.id).to.eql('a416339830');
+
+        ass(act.athlete.constructor.name).eql('Athlete');
+        ass(act.athlete.id).to.eql(4681834);
+
+        // That was cool while checking the data received :)
+        // It could be removed, but keeping in honour of composition
+        ass(act).to.match({
+          athlete: ass.match({
+            id: 4681834,
+            resource_state: 1
+          }),
+          map: ass.match({
+            id: 'a416339830',
+            resource_state: 3
+          })
+        });
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    });
   });
 
 });

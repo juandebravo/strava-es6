@@ -75,6 +75,9 @@ export class Activity {
         throw new Error(`Invalid activity type <${args.type}>`);
       }
     }
+
+    // TODO: handle segments
+    //curl "https://www.strava.com/api/v3/activities/416339830?include_all_efforts=true&access_token=f5
   }
 
   save() {
@@ -114,6 +117,17 @@ export class Activity {
         return result;
       }, []);
       return _activities;
+    });
+
+    return p;
+  };
+
+  static findById(access_token, id, include_all_efforts=false) {
+    const queryParams = include_all_efforts ? {include_all_efforts: true} : {};
+
+    let p = client.get(access_token, `activities/${id}`, queryParams)
+    .then((data) => {
+      return Activity.fromStrava(data);
     });
 
     return p;

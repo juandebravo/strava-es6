@@ -1,6 +1,7 @@
 /*jshint esnext: true */
 
 const https = require('https');
+const _ = require('lodash');
 
 const options = {
   hostname: 'www.strava.com',
@@ -8,9 +9,17 @@ const options = {
   agent: false
 };
 
-let doRequest = (method, access_token, path, body) => {
+let doRequest = (method, access_token, path, queryParams={}, body) => {
   let _options = options;
-  _options.path = '/api/v3/' + path + '?access_token=' + access_token;
+
+  // TODO: prevent mutating parameter
+  queryParams['access_token'] = access_token;
+
+  const params = _.map(queryParams, function(value, key) {
+    return key + '=' + value
+  }).join('&');
+
+  _options.path = `/api/v3/${path}?${params}`;
   _options.method = method;
 
   let p = new Promise( (resolve, reject) => {
