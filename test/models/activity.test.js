@@ -277,7 +277,7 @@ describe('strava.models.activity.Activity', function () {
 
   before(function() {
     // Avoid any HTTP request
-    //nock.disableNetConnect();
+    nock.disableNetConnect();
     ACCESS_TOKEN = 'foobar';
   });
 
@@ -354,12 +354,10 @@ describe('strava.models.activity.Activity', function () {
   });
 
   describe('#findById()', function () {
-    var ACCESS_TOKEN;
 
     before(function() {
       // Avoid any HTTP request
       nock.disableNetConnect();
-      ACCESS_TOKEN = 'f57facd77c1ee265a0cf2b9b3e28e91fd20f45d9';
     });
 
     it('should return an activity by using its id', function () {
