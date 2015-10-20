@@ -8,4 +8,9 @@ export class StravaMap {
     this.resource_state = resource_state;
   }
 
+  // A class cannot include only the constructor:
+  // https://code.google.com/p/v8/issues/detail?id=4450
+  static fromStrava(data) {
+    // TODO
+  };
 }

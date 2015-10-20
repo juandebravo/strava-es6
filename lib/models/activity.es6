@@ -75,14 +75,48 @@ export class Activity {
         throw new Error(`Invalid activity type <${args.type}>`);
       }
     }
-
     // TODO: handle segments
     //curl "https://www.strava.com/api/v3/activities/416339830?include_all_efforts=true&access_token=f5
   }
 
-  save() {
+  save (access_token) {
     if (this.id) {
-      // DO PUT
+      let data = {};
+
+      if (this.name) {
+        data.name = this.name;
+      }
+
+      if (this.type) {
+        data.type = this.type;
+      }
+
+      if (this.private != undefined) {
+        data.private = !!this.private;
+      }
+
+      if (this.commute != undefined) {
+        data.commute = !!this.commute;
+      }
+
+      if (this.trainer != undefined) {
+        data.trainer = !!this.trainer;
+      }
+
+      if (this.gear_id) {
+        // ‘none’ clears gear from activity
+        data.gear_id = this.gear_id;
+      }
+
+      if (this.description) {
+        data.description = this.description;
+      }
+
+      let p = client.put(access_token, `activities/${this.id}`, {}, data)
+      .then(Activity.fromStrava);
+
+      return p;
+
     } else {
       // DO POST
       // TODO: validate name, type, start_date_local,
@@ -105,7 +139,7 @@ export class Activity {
       //.then(Activity.fromStrava);
       //return p;
     }
-  }
+  };
 
   static findAll(access_token, interval, page, per_page) {
     // handle the rest of parameters
@@ -139,5 +173,5 @@ export class Activity {
     const id = data.id;
     delete data.id;
     return new Activity(id, data);
-  }
+  };
 };

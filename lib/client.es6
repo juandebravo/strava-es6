@@ -22,6 +22,17 @@ let doRequest = (method, access_token, path, queryParams={}, body) => {
   _options.path = `/api/v3/${path}?${params}`;
   _options.method = method;
 
+  if (body) {
+    body = _.map(body, function(value, key) {
+      return key + '=' + value
+    }).join('&');
+
+    _options.headers = {
+      'content-type': 'application/x-www-form-urlencoded',
+      'content-length': body.length
+    };
+  }
+
   let p = new Promise( (resolve, reject) => {
     let req = https.request(_options, (res) => {
       let data = '';
@@ -44,6 +55,11 @@ let doRequest = (method, access_token, path, queryParams={}, body) => {
     req.on('error', function (e) {
       reject(e);
     });
+
+    if (body != undefined) {
+      // write data to request body
+      req.write(body);
+    }
 
     req.end();
   });

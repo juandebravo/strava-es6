@@ -192,6 +192,7 @@ function mockActivitiesRequest(access_token) {
 }
 
 function mockActivityRequest(access_token, activity_id, include_all_efforts) {
+  // TODO: include segments
   var data = {
     id: activity_id,
     resource_state: 3,
@@ -275,7 +276,7 @@ function mockActivityRequest(access_token, activity_id, include_all_efforts) {
 describe('strava.models.activity.Activity', function () {
   var ACCESS_TOKEN;
 
-  before(function() {
+  beforeEach(function() {
     // Avoid any HTTP request
     nock.disableNetConnect();
     ACCESS_TOKEN = 'foobar';
@@ -345,11 +346,46 @@ describe('strava.models.activity.Activity', function () {
 
     it('should format a Date instance to ISO 8601 format');
 
-    it('should set the private flag is defined');
+    _.forEach(["private", "commute", "trainer"], function (option) {
 
-    it('should set the trainer flag is defined');
+      _.forEach([true, false], function (value) {
 
-    it('should set the commute flag is defined');
+        it('should set the ' + option + ' flag to ' + value, function (done) {
+          var ACTIVITY_ID = 416339830;
+
+          // Inject the `option value` programmatically to
+          // prevent `option` to be the dict key
+          var response = {"id": ACTIVITY_ID};
+          response[option] = value;
+
+          nock('https://www.strava.com:443')
+          .put('/api/v3/activities/' + ACTIVITY_ID)
+          .query({access_token: ACCESS_TOKEN})
+          .reply(
+            200,
+            response,
+            { }
+          );
+
+          var _activity = new activity.Activity(416339830);
+          _activity.private = value;
+          _activity.save(ACCESS_TOKEN)
+          .then(function (data) {
+            ass(data[option]).to.eql(value);
+            done();
+          })
+          .catch(function (error) {
+            done(error);
+          });
+        });
+
+      });
+
+    });
+
+    it('should set the trainer flag if it is defined');
+
+    it('should set the commute flag if it is defined');
 
   });
 
