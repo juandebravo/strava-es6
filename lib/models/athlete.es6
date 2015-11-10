@@ -40,6 +40,10 @@ export class Athlete {
   constructor(id, args) {
     this.id = id;
 
+    if (args == undefined) {
+      return;
+    }
+
     // Set arguments that do not require checks
     for (let a of _unchecked_arguments) {
       if (a in args) {
@@ -70,9 +74,20 @@ export class Athlete {
 
   }
 
-  update(access_token, city=null, state=null, sex=null, weight=null) {
-
+  save (access_token, city=null, state=null, sex=null, weight=null) {
+    // sex (string): 'M' or 'F', any other value will set to null and displayed as "rather not say"
+    // weight (float): kilograms
   };
+
+  // Retrieves the athlete stats.
+  // athlete_id is mandatory in Strava API.
+  // if it's unknown, it will be transparenty retrieved
+  stats (access_token) {
+    const p = client.get(access_token, `athletes/${this.id}/stats`)
+    .then(Athlete.fromStrava);
+
+    return p;
+  }
 
   // Returns an Athlete based on the access token
   static findByAccessToken(access_token) {
