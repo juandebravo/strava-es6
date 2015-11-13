@@ -79,14 +79,27 @@ export class Athlete {
     // weight (float): kilograms
   };
 
-  // Retrieves the athlete stats.
-  // athlete_id is mandatory in Strava API.
-  // if it's unknown, it will be transparenty retrieved
+  // Retrieves the athlete instance stats
   stats (access_token) {
-    const p = client.get(access_token, `athletes/${this.id}/stats`)
-    .then(Athlete.fromStrava);
+    return client.get(access_token, `athletes/${this.id}/stats`);
+  }
 
-    return p;
+  // Retrieves the athlete stats.
+  // As `athlete_id` is mandatory in Strava API,
+  // it's transparenty retrieved via findByAccessToken
+  static stats (access_token) {
+    return Athlete.findByAccessToken(access_token)
+    .then( athlete => athlete.stats(access_token));
+  }
+
+  // Retrieves the athlete instance stats
+  koms (access_token) {
+    return client.get(access_token, `athletes/${this.id}/koms`);
+  }
+
+  static koms (access_token) {
+    return Athlete.findByAccessToken(access_token)
+    .then( athlete => athlete.koms(access_token));
   }
 
   // Returns an Athlete based on the access token

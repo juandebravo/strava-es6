@@ -6,7 +6,6 @@
 class _Enum {
 
   constructor(values) {
-
     // Ensure we can access the enum keys directly
     // i.e.
     //   Foo.BAR -> 0
@@ -31,7 +30,7 @@ class _Enum {
   // i.e.
   //   Foo.check(0) -> true
   check (value) {
-      return !!this.parse(value);
+    return !!this.parse(value);
   }
 
   // Return the received value if it's one of the enum values
@@ -41,10 +40,10 @@ class _Enum {
   //   Foo.assert(2) -> throw Error "Invalid value 2 for the Enum"
   assert (value) {
     if (!this.check(value)) {
-        throw new Error(`Invalid value ${value} for the Enum`);
+      throw new Error(`Invalid value ${value} for the Enum`);
     }
     return value;
   }
 }
 
-export var Enum = (opts) => Object.freeze(new _Enum(opts));
+export var Enum = opts => Object.freeze(new _Enum(opts));
