@@ -1,15 +1,14 @@
 /*jshint esnext: true */
 
-// Export directly every export in the following
-// models files
+const fs = require('fs');
+const path = require('path');
 
-// TODO: load automatically every file in models folder
-const _models = ['activity', 'athlete', 'stravamap'];
-
-for (let model of _models) {
+// Export directly every export in the models files
+const modelsFolder = path.join(__dirname, 'models');
+fs.readdirSync(modelsFolder).forEach(model => {
   let _file = require(`./models/${model}`);
 
   for (let o of Object.keys(_file)) {
     exports[o] = _file[o];
   }
-}
+});
